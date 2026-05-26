@@ -3,6 +3,7 @@ package cmd
 import (
 	"fmt"
 
+	"github.com/dorianneto/1bookmark/internal/db"
 	"github.com/dorianneto/1bookmark/internal/extractor"
 	"github.com/spf13/cobra"
 )
@@ -30,7 +31,15 @@ var importCmd = &cobra.Command{
 			return
 		}
 
-		fmt.Printf("Imported %d bookmarks\n", len(bookmarks))
+		fmt.Printf("Extracted %d bookmarks\n", len(bookmarks))
+
+		db, err := db.InitDb()
+		if err != nil {
+			fmt.Printf("Error initializing database: %v\n", err)
+			return
+		}
+
+		defer db.Close()
 	},
 }
 
